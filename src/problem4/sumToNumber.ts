@@ -48,5 +48,9 @@ measure_execution_time(calc.sum_to_n_b.bind(calc), n);
 console.log("sum_to_n_c:");
 measure_execution_time(calc.sum_to_n_c.bind(calc), n);
 
+// EVALUATION
+// The iterative method (sum_to_n_a) is just simple loop => reduce time creation => The best method in term of time complexity. 
+// The array and reduce method (sum_to_n_c) also runs in O(n) but includes array creation. 
+// The recursive method (sum_to_n_b) has O(n) complexity but increase overhead from recursive calls.
 
-// Evaluation ()
+
