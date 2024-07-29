@@ -19,7 +19,7 @@ For testing function, please install `npm install -g typescript`, use `tsc` to c
 
 ### Overview
 
-This project follows the MVC model, with the addition of a repository and service layer to enhance separation of concerns
+This Backend services follows the MVC model, with the addition of a repository and service layer to enhance separation of concerns.
 
 #### Libraries Used
 - **dotenv**: For loading environment variables from a `.env` file.
@@ -87,12 +87,12 @@ This project follows the MVC model, with the addition of a repository and servic
 
 3. The server should be running at `http://localhost:3000` and you can test it by making API requests.
 
-## Problem 5
+## Problem 6
 
 ### Software Requirement
 
 #### Overview
-This module handles updating and displaying the top 10 user scores on the scoreboard. It ensures live updates and secures against unauthorized score manipulations.
+This module handles updating and displaying the top 10 user scores on the scoreboard. It ensures live updates and secures access for updating scores
 
 #### Features
 - Display the top 10 user scores.
@@ -115,7 +115,7 @@ This module handles updating and displaying the top 10 user scores on the scoreb
       "username": "user2",
       "score": 1450
     }
-    // More entries...
+
   ]
   
 #### 2. Update Score
@@ -137,33 +137,55 @@ This module handles updating and displaying the top 10 user scores on the scoreb
   {
   "error": "Invalid request. Please provide both 'username' and 'score'."
   }
-  ```json
-
-### Sequecen diagrams
-#### Auth Service:
-
-    Handles user authentication and authorization for actions.
-    Validates tokens with OAuth and checks permissions before granting access.
-
-    ![ảnh](https://github.com/user-attachments/assets/4f1f8ff3-818b-44f7-9349-9935ff2b8f76)
 
 
-#### Score Service:
+### Sequence Diagrams
 
-    Receives score update requests.
-    Validates the request through the Auth Service.
-    Updates the score in the database and publishes the update event to Kafka.
+#### Auth Service
 
-    ![ảnh](https://github.com/user-attachments/assets/9d2cb717-98ae-4dd7-80e2-8a593ceed3d2)
+Handles user authentication and authorization for actions. Validates tokens with OAuth and checks permissions before granting access.
 
-#### Leaderboard Service:
+![Auth Service Sequence Diagram](https://github.com/user-attachments/assets/4f1f8ff3-818b-44f7-9349-9935ff2b8f76)
 
-    Subscribes to the Kafka topic for score updates.
-    Receives and processes score update events.
-    Updates the leaderboard and pushes real-time updates to clients.
-  
-    ![ảnh](https://github.com/user-attachments/assets/90ab6279-f000-434e-b68b-b017178f1adb)
+#### Score Service
 
+Receives score update requests. Validates the request through the Auth Service. Updates the score in the database and publishes the update event to Kafka.
+
+![Score Service Sequence Diagram](https://github.com/user-attachments/assets/9d2cb717-98ae-4dd7-80e2-8a593ceed3d2)
+
+#### Leaderboard Service
+
+Subscribes to the Kafka topic for score updates. Receives and processes score update events. Updates the leaderboard and pushes real-time updates to clients.
+
+![Leaderboard Service Sequence Diagram](https://github.com/user-attachments/assets/90ab6279-f000-434e-b68b-b017178f1adb)
+
+### Architecture overview
+
+
+![ảnh](https://github.com/user-attachments/assets/cc481bad-5abd-4c9c-8652-60dc6acbf318)
+
+1. **Client Requests**
+   - Clients send requests to the system.
+
+2. **Reverse Proxy**
+   - Handles incoming requests.
+   - Performs SSL termination.
+   - Forwards requests to the API Gateway.
+
+3. **API Gateway**
+   - Acts as the entry point for API requests.
+   - Routes requests to the appropriate backend services.
+
+4. **Kafka**
+   - Sets up asynchronous communication between services.
+   - Handles message production and consumption.
+
+#### Architecture Consideration
+
+- **Microservices**: Suitable for large, complex systems where scalability and separation of concerns are important.
+- **Monolithic**: May be preferred for simpler systems due to ease of development and cost-effectiveness. 
+
+**Note**: The choice between microservices and a monolithic approach should be based on the system's size and complexity. My assumption is that the system is well-suited for microservices. However, for simpler systems, a monolithic approach might be more appropriate.
 
  
   
