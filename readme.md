@@ -87,4 +87,86 @@ This project follows the MVC model, with the addition of a repository and servic
 
 3. The server should be running at `http://localhost:3000` and you can test it by making API requests.
 
+## Problem 5
+
+### Software Requirement
+
+#### Overview
+This module handles updating and displaying the top 10 user scores on the scoreboard. It ensures live updates and secures against unauthorized score manipulations.
+
+#### Features
+- Display the top 10 user scores.
+- Live update of the scoreboard.
+- Secure score updates.
+
+#### 1. Get Top 10 Scores
+
+- **Endpoint**: `/api/scores/top10`
+- **Method**: `GET`
+- **Description**: Retrieves the top 10 user scores.
+- **Response**:
+  ```json
+  [
+    {
+      "username": "user1",
+      "score": 1500
+    },
+    {
+      "username": "user2",
+      "score": 1450
+    }
+    // More entries...
+  ]
+  
+#### 2. Update Score
+- **Endpoint**: `/api/scores/update`
+- **Method**: `POST`
+- **Description**: Updates the score of a user.
+- **Request Body**:
+  ```json
+  {
+    "username": "user1",
+    "score": 1500
+  }
+- **Response**:
+  ```json
+  {
+  "message": "Score updated successfully"
+  }
+  // OR
+  {
+  "error": "Invalid request. Please provide both 'username' and 'score'."
+  }
+  ```json
+
+### Sequecen diagrams
+#### Auth Service:
+
+    Handles user authentication and authorization for actions.
+    Validates tokens with OAuth and checks permissions before granting access.
+
+    ![ảnh](https://github.com/user-attachments/assets/4f1f8ff3-818b-44f7-9349-9935ff2b8f76)
+
+
+#### Score Service:
+
+    Receives score update requests.
+    Validates the request through the Auth Service.
+    Updates the score in the database and publishes the update event to Kafka.
+
+    ![ảnh](https://github.com/user-attachments/assets/9d2cb717-98ae-4dd7-80e2-8a593ceed3d2)
+
+#### Leaderboard Service:
+
+    Subscribes to the Kafka topic for score updates.
+    Receives and processes score update events.
+    Updates the leaderboard and pushes real-time updates to clients.
+  
+    ![ảnh](https://github.com/user-attachments/assets/90ab6279-f000-434e-b68b-b017178f1adb)
+
+
+ 
+  
+
+
 
